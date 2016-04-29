@@ -5,7 +5,8 @@ app.controller('jobsSearch', function($scope, $http) {
 	$scope.jobLocation = "";
 	$scope.loadingJobResults = false;
 	
-	$scope.serverAddress = '10.240.32.167';
+	//$scope.serverAddress = '10.240.32.167';
+	$scope.serverAddress = 'localhost';
 		  
 	$scope.getJobSuggestions = function(val) {
 		    return $http.post('http://' + $scope.serverAddress + ':8080/JobsCrawler/getJobTitleSuggestions', 
