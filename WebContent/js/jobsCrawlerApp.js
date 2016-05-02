@@ -1,13 +1,36 @@
 var app = angular.module('jobsCrawlerApp', ['ngAnimate', 'ui.bootstrap']);
+
+
 app.controller('jobsSearch', function($scope, $http) {
 	$scope.jobs = [];
 	$scope.jobTitle = "";
 	$scope.jobLocation = "";
 	$scope.loadingJobResults = false;
 	
-	//$scope.serverAddress = '10.240.32.167';
-	$scope.serverAddress = 'localhost';
-		  
+	$scope.serverAddress = '10.240.32.167';
+	//$scope.serverAddress = 'localhost';
+	$scope.showModal = false;
+	 
+	$scope.registerUserName = "";
+	$scope.registerPassword = "";
+	$scope.registerPhone = "";
+	$scope.registerKeywords = "";
+	  
+	  $scope.doRegister = function() {
+	    	console.log("get jobs");
+	    	
+	    	alert("User Registered Successfully");
+	    	
+	    	$scope.registerUserName = "";
+	    	$scope.registerPassword = "";
+	    	$scope.registerPhone = "";
+	    	$scope.registerKeywords = "";
+	    	
+	    	$scope.status.open = false;
+	    	
+	    	
+	    };
+	
 	$scope.getJobSuggestions = function(val) {
 		    return $http.post('http://' + $scope.serverAddress + ':8080/JobsCrawler/getJobTitleSuggestions', 
 		    JSON.stringify( {
@@ -60,3 +83,19 @@ app.controller('jobsSearch', function($scope, $http) {
     	
     };
 });
+
+app.controller('ModalInstanceCtrl', function ($scope, $modalInstance, items) {
+
+	  $scope.items = items;
+	  $scope.selected = {
+	    item: $scope.items[0]
+	  };
+
+	  $scope.ok = function () {
+	    $modalInstance.close($scope.selected.item);
+	  };
+
+	  $scope.cancel = function () {
+	    $modalInstance.dismiss('cancel');
+	  };
+	});

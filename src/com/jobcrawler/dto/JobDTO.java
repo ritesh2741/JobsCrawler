@@ -7,7 +7,14 @@ public class JobDTO {
 	private String link;
 	private String description;
 	private String company;
+	private String dataFrom;
 	
+	public String getDataFrom() {
+		return dataFrom;
+	}
+	public void setDataFrom(String dataFrom) {
+		this.dataFrom = dataFrom;
+	}
 	public String getCompany() {
 		return company;
 	}
