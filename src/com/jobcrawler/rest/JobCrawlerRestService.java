@@ -117,6 +117,115 @@ public class JobCrawlerRestService {
 		// return jobDto;
 		return jobs;
 	}
+	
+	@RequestMapping(value = "/getIndeedJobs", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody List<JobDTO> getJobsFromIndeed(@RequestBody JobDTO jobDTO) throws IOException {
+
+		System.out.println(jobDTO.getTitle() + " " + jobDTO.getLocation());
+
+		List<JobDTO> jobs = new ArrayList<JobDTO>();
+		WebClient webClient = new WebClient();
+		// webClient.setJavaScriptErrorListener(null);
+		// webClient.setCssErrorHandler(null);
+
+		HtmlPage htmlPage = webClient.getPage("http://www.indeed.com/");
+		HtmlTextInput htmlTextInput1 = (HtmlTextInput) htmlPage.getElementById("what");
+		htmlTextInput1.setValueAttribute(jobDTO.getTitle());
+		HtmlTextInput htmlTextInput2 = (HtmlTextInput) htmlPage.getElementById("where");
+		htmlTextInput2.setValueAttribute(jobDTO.getLocation());
+		HtmlSubmitInput findJobButton = (HtmlSubmitInput) htmlPage.getElementById("fj");
+		HtmlPage jobsPage = findJobButton.click();
+		// System.out.println(jobsPage);
+
+		List<HtmlAnchor> anchors = jobsPage.getAnchors();
+		DomNodeList<DomElement> companyAndlocationSpans = jobsPage.getElementsByTagName("span");
+
+		for (HtmlAnchor anchor : anchors) {
+
+			// System.out.println(anchor.getAttribute("class"));
+
+			if (anchor.getAttribute("class").equals("jobtitle turnstileLink")) {
+				System.out.println("Title : " + anchor.getTextContent());
+				System.out.println("Link : " + anchor.getAttribute("href"));
+
+				JobDTO jobDto = new JobDTO();
+				jobDto.setTitle(anchor.getTextContent());
+				jobDto.setLink("http://www.indeed.com/" + anchor.getAttribute("href"));
+
+				jobDto.setDataFrom("http://www.indeed.com/");
+				
+				jobs.add(jobDto);
+			}
+
+		}
+
+		int i = 0;
+
+		for (DomElement companyAndlocationSpan : companyAndlocationSpans) {
+
+			// System.out.println(anchor.getAttribute("class"));
+
+			if (companyAndlocationSpan.getAttribute("class").equals("company")) {
+				System.out.println("Company : " + companyAndlocationSpan.getTextContent());
+				jobs.get(i).setCompany(companyAndlocationSpan.getTextContent());
+			} else if (companyAndlocationSpan.getAttribute("class").equals("location")) {
+				System.out.println("Location : " + companyAndlocationSpan.getTextContent());
+				jobs.get(i).setLocation(companyAndlocationSpan.getTextContent());
+			} else if (companyAndlocationSpan.getAttribute("class").equals("summary")) {
+				System.out.println("Description : " + companyAndlocationSpan.getTextContent());
+				jobs.get(i).setDescription(companyAndlocationSpan.getTextContent());
+				i++;
+
+				if (i == jobs.size()) {
+					break;
+				}
+			}
+
+		}
+
+		webClient.closeAllWindows();
+		
+		// return jobDto;
+		return jobs;
+	}
+	
+	@RequestMapping(value = "/getDiceJobs", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody List<JobDTO> getJobsFromDice(@RequestBody JobDTO jobDTO) throws IOException {
+
+		System.out.println(jobDTO.getTitle() + " " + jobDTO.getLocation());
+
+		List<JobDTO> jobs = new ArrayList<JobDTO>();
+		
+		jobs.addAll(getDiceJobs(jobDTO));
+		
+		
+		// return jobDto;
+		return jobs;
+	}
+	
+	@RequestMapping(value = "/getCareerJetJobs", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody List<JobDTO> getJobsFromCareerJet(@RequestBody JobDTO jobDTO) throws IOException {
+
+		System.out.println(jobDTO.getTitle() + " " + jobDTO.getLocation());
+
+		List<JobDTO> jobs = new ArrayList<JobDTO>();
+		
+		jobs.addAll(getCareerJetJobs(jobDTO));
+		
+		return jobs;
+	}
+	
+	@RequestMapping(value = "/getCareerBuilderJobs", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody List<JobDTO> getJobsFromCareerBuilder(@RequestBody JobDTO jobDTO) throws IOException {
+
+		System.out.println(jobDTO.getTitle() + " " + jobDTO.getLocation());
+
+		List<JobDTO> jobs = new ArrayList<JobDTO>();
+		
+		jobs.addAll(getCareerBuilderJobs(jobDTO));
+		
+		return jobs;
+	}
 
 	@RequestMapping(value = "/getJobTitleSuggestions", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody List<String> getJobTitleSuggestions(@RequestBody JobDTO jobDTO)
@@ -234,6 +343,7 @@ List<JobDTO> diceJobDto = new ArrayList<>();
 		
 		WebClient webClient = new WebClient();
 		webClient.getOptions().setThrowExceptionOnScriptError(false);
+		webClient.getOptions().setJavaScriptEnabled(false);
 
 		HtmlPage htmlPage = webClient.getPage("http://www.dice.com/");
 		HtmlTextInput htmlTextInput1 = (HtmlTextInput) htmlPage.getElementById("search-field-keyword");
@@ -390,7 +500,6 @@ List<JobDTO> diceJobDto = new ArrayList<>();
 		return jobDtos;
 	}
 
-
 	public List<JobDTO> getCareerBuilderJobs(JobDTO inputJobDto) throws FailingHttpStatusCodeException, MalformedURLException, IOException {
 		List<JobDTO> jobDtos = new ArrayList<JobDTO>();
 		WebClient webClient = new WebClient();
@@ -456,32 +565,32 @@ List<JobDTO> diceJobDto = new ArrayList<>();
 	}
 	
 	@RequestMapping(value = "/doRegister", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-	public String doRegister(RegisterDTO registerDto) {
+	public @ResponseBody String doRegister(@RequestBody RegisterDTO registerDto) {
+		
+		System.out.println("Inside DoRegister : " + registerDto.getEmailId() + " : " + registerDto.getPhoneNumber() + " : " + registerDto.getKeywords());
 		
 		try {
-			Class.forName("com.mysql.jdbc.Driver");
+			
+			  Class.forName("com.mysql.jdbc.Driver");
 
-		      //STEP 3: Open a connection
-		      System.out.println("Connecting to database...");
-		      Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/jobsCrawler","root","password");
+		      Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/jobsCrawlerDB","root","password");
 
-		      //STEP 4: Execute a query
-		      System.out.println("Creating statement...");
 		      Statement  stmt = conn.createStatement();
-		      String sql;
-		      sql = "SELECT id, first, last, age FROM Employees";
-		     int n = stmt.executeUpdate("INSERT INTO userDetails (emailId, password, jobKeywords) values('" + registerDto.getUsername() + "', '" + registerDto.getPassword() + "', '" + registerDto.getKeywords() + "')");
-
-		      //STEP 5: Extract data from result set
-		     
-
+		      
+		      stmt.executeUpdate("INSERT INTO userDetails (emailId, phoneNumber, jobKeywords, location) values('" + registerDto.getEmailId() + "', '" + registerDto.getPhoneNumber() + "', '" + registerDto.getKeywords() + "', '" + registerDto.getLocation() +  "')");
+		      
+		      stmt.close();
+		      
+		      conn.close();
+		      
 		 
 		}
 		catch(Exception e) {
-			
+			e.printStackTrace();
 		}
 		
-		return "Registered Successfully";
+		return "{\"response\" : \"Registered Successfully\"}";
+		//return new JobDTO();
 	}
 	
 }

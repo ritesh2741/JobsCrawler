@@ -12,6 +12,10 @@
   <servlet-mapping>
     <servlet-name>dispatcher</servlet-name>
     <url-pattern>/getJobs</url-pattern>
+    <url-pattern>/getIndeedJobs</url-pattern>
+    <url-pattern>/getDiceJobs</url-pattern>
+    <url-pattern>/getCareerJetJobs</url-pattern>
+    <url-pattern>/getCareerBuilderJobs</url-pattern>
     <url-pattern>/getJobTitleSuggestions</url-pattern>
     <url-pattern>/getJobLocations</url-pattern>
     <url-pattern>/doRegister</url-pattern>

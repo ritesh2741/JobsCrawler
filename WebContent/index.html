@@ -16,8 +16,10 @@
 <script
 	src="http://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-1.3.2.js"></script>
 
-<script src="js/jobsCrawlerApp.js"></script>
+
 <script src="js/ui-bootstrap-tpls-1.3.2.min.js"></script>
+
+<script src="js/jobsCrawlerApp.js"></script>
 
 <style>
 .typeahead-demo .custom-popup-wrapper {
@@ -50,110 +52,113 @@
 </head>
 <body ng-app="jobsCrawlerApp">
 
-
-
-	<nav class="navbar navbar-default navbar-fixed-top">
-		<div class="container-fluid">
-			<!-- Brand and toggle get grouped for better mobile display -->
-			<div class="navbar-header">
-				<button type="button" class="navbar-toggle collapsed"
-					data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"
-					aria-expanded="false">
-					<span class="sr-only">Toggle navigation</span> <span
-						class="icon-bar"></span> <span class="icon-bar"></span> <span
-						class="icon-bar"></span>
-				</button>
-				<a class="navbar-brand" href="#">Jobs Crawler</a>
-			</div>
-
-			<!-- Collect the nav links, forms, and other content for toggling -->
-			<div class="collapse navbar-collapse"
-				id="bs-example-navbar-collapse-1">
-
-				<ul class="nav navbar-nav navbar-right">
-					<li><a href="#"><button type="button"
-								class="btn btn-primary btn-md" data-toggle="modal"
-								ng-click="status.open = !status.open">SignUp</button></a></li>
-				</ul>
-
-
-
-			</div>
-			<!-- /.navbar-collapse -->
-		</div>
-		<!-- /.container-fluid -->
-	</nav>
-
-	<br>
-	<br>
-	<br>
-
 	<div ng-controller="jobsSearch">
+
+		<nav class="navbar navbar-default navbar-fixed-top">
+			<div class="container-fluid">
+				<!-- Brand and toggle get grouped for better mobile display -->
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle collapsed"
+						data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"
+						aria-expanded="false">
+						<span class="sr-only">Toggle navigation</span> <span
+							class="icon-bar"></span> <span class="icon-bar"></span> <span
+							class="icon-bar"></span>
+					</button>
+					<a class="navbar-brand" href="#">Jobs Crawler</a>
+				</div>
+
+				<!-- Collect the nav links, forms, and other content for toggling -->
+				<div class="collapse navbar-collapse"
+					id="bs-example-navbar-collapse-1">
+
+					<ul class="nav navbar-nav navbar-right">
+						<li><a href="#"><button type="button"
+									class="btn btn-primary btn-md" data-toggle="modal"
+									ng-click="status.open = !status.open">SignUp for Email
+									Notifications</button></a></li>
+					</ul>
+
+
+
+				</div>
+				<!-- /.navbar-collapse -->
+			</div>
+			<!-- /.container-fluid -->
+		</nav>
+
+		<br> <br> <br>
+
+
 
 
 		<div style="width: 100%;" align="center">
 			<div style="width: 50%;">
-			<br>
-				<uib-accordion close-others="oneAtATime" ng-show="status.open"> <uib-accordion-group
-					is-open="status.open">
+				<br>
+
+				<div class="panel panel-primary" ng-show="status.open">
+
+					<div class="panel-heading">
+						<h3 class="panel-title">Signup for Notifications</h3>
+					</div>
+
+					<div class="panel-body">
+						<div class="row">
+							<div class="col-md-2"></div>
+							<div class="col-md-8">
+								<div class="row">
+									<div class="col-md-6">Username :</div>
+									<div class="col-md-6">
+										<input type="text" ng-model="registerUserName"
+											placeholder="Email ID" class="form-control">
+									</div>
+								</div>
+								<br>
+								<div class="row">
+									<div class="col-md-6">Phone No :</div>
+									<div class="col-md-6">
+										<input type="text" ng-model="registerPhone"
+											placeholder="Ph No" class="form-control">
+									</div>
+								</div>
+								<br>
+								<div class="row">
+									<div class="col-md-6">Job Keywords :</div>
+									<div class="col-md-6">
+										<input type="text" ng-model="registerKeywords"
+											placeholder="Job Keywords" class="form-control">
+									</div>
+								</div>
+								<br>
+								<div class="row">
+									<div class="col-md-6">Location :</div>
+									<div class="col-md-6">
+										<input type="text" ng-model="registerLocation"
+											placeholder="Job Location" class="form-control">
+									</div>
+								</div>
+								<br>
+								<div class="row">
+									<div class="col-md-6"></div>
+									<div class="col-md-6">
+										<button type="button" class="btn btn-primary btn-sm"
+											ng-click="doRegister()">Setup Notification</button>
+									</div>
+								</div>
+							</div>
+
+							<div class="col-md-2"></div>
 
 
-<uib-accordion-heading>
-		
-        Register <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
-      </uib-accordion-heading>
-
-
-				<div class="row">
-					<div class="col-md-2"></div>
-					<div class="col-md-8">
-						<div class="row">
-							<div class="col-md-6">Username :</div>
-							<div class="col-md-6">
-								<input type="text" ng-model="registerUserName" placeholder="Email ID"
-									class="form-control">
-							</div>
-						</div>
-						<br>
-						<div class="row">
-							<div class="col-md-6">Password :</div>
-							<div class="col-md-6">
-								<input type="password" ng-model="registerPassword" placeholder="Password"
-									class="form-control">
-							</div>
-						</div>
-						<br>
-						<div class="row">
-							<div class="col-md-6">Phone No :</div>
-							<div class="col-md-6">
-								<input type="text" ng-model="registerPhone" placeholder="Ph No"
-									class="form-control">
-							</div>
-						</div>
-						<br>
-						<div class="row">
-							<div class="col-md-6">Job Keywords :</div>
-							<div class="col-md-6">
-								<input type="text" ng-model="registerKeywords" placeholder="Job Keywords"
-									class="form-control">
-							</div>
-						</div>
-						<br>
-						<div class="row">
-							<div class="col-md-6"></div>
-							<div class="col-md-6">
-								<button type="button" class="btn btn-primary btn-sm"
-						ng-click="doRegister()">Register</button>
-							</div>
 						</div>
 					</div>
 
-					<div class="col-md-2"></div>
-
-
 				</div>
 
-				</uib-accordion-group> </uib-accordion>
+
+
+
+
 			</div>
 		</div>
 
@@ -223,16 +228,7 @@
 
 		</div>
 
-		<br> <br>
-
-		<div class="row" ng-show="loadingJobResults">
-			<div class="col-md-5"></div>
-			<div class="col-md-1">
-				<img src="img/loading.gif" />
-			</div>
-		</div>
-
-		<div class="row" ng-repeat="job in jobs">
+		<div class="row" ng-repeat="job in indeedjobs">
 			<div class="col-md-2"></div>
 			<div class="col-md-8">
 				<div class="panel panel-default">
@@ -252,6 +248,84 @@
 
 					</div>
 				</div>
+			</div>
+		</div>
+
+		<div class="row" ng-repeat="job in dicejobs">
+			<div class="col-md-2"></div>
+			<div class="col-md-8">
+				<div class="panel panel-default">
+					<div class="panel-body">
+						<h2>
+							<a ng-href="{{job.link}}" target="_blank">{{job.title}}</a>
+						</h2>
+						<h3>{{job.company}}</h3>
+						{{job.location}}<br> {{job.description}}<br> <br> <br>
+
+						<div class="row">
+							<div class="col-md-8"></div>
+							<div class="col-md-4">
+								<a ng-href="{{job.dataFrom}}" target="_blank">{{job.dataFrom}}</a>
+							</div>
+						</div>
+
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="row" ng-repeat="job in careerjetjobs">
+			<div class="col-md-2"></div>
+			<div class="col-md-8">
+				<div class="panel panel-default">
+					<div class="panel-body">
+						<h2>
+							<a ng-href="{{job.link}}" target="_blank">{{job.title}}</a>
+						</h2>
+						<h3>{{job.company}}</h3>
+						{{job.location}}<br> {{job.description}}<br> <br> <br>
+
+						<div class="row">
+							<div class="col-md-8"></div>
+							<div class="col-md-4">
+								<a ng-href="{{job.dataFrom}}" target="_blank">{{job.dataFrom}}</a>
+							</div>
+						</div>
+
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="row" ng-repeat="job in careerbuilderjobs">
+			<div class="col-md-2"></div>
+			<div class="col-md-8">
+				<div class="panel panel-default">
+					<div class="panel-body">
+						<h2>
+							<a ng-href="{{job.link}}" target="_blank">{{job.title}}</a>
+						</h2>
+						<h3>{{job.company}}</h3>
+						{{job.location}}<br> {{job.description}}<br> <br> <br>
+
+						<div class="row">
+							<div class="col-md-8"></div>
+							<div class="col-md-4">
+								<a ng-href="{{job.dataFrom}}" target="_blank">{{job.dataFrom}}</a>
+							</div>
+						</div>
+
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<br> <br>
+
+		<div class="row" ng-show="loadingJobResults">
+			<div class="col-md-5"></div>
+			<div class="col-md-1">
+				<img src="img/loading.gif" />
 			</div>
 		</div>
 
